@@ -22,6 +22,10 @@ export default class DailyInfo extends Component {
     });
   }
 
+  config = {
+    navigationBarTitleText: '日报详情'
+  };
+
   render() {
     const { loading, data } = this.state;
     const {

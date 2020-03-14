@@ -8,7 +8,6 @@ export default class DatePicker extends Component {
   static propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func.isRequired,
-    showCurrentDate: PropTypes.bool
   };
 
   static defaultProps = {
@@ -18,8 +17,7 @@ export default class DatePicker extends Component {
 
   state = {
     isOpened: false,
-    value: this.props.value,
-    tempValue: ''
+    currentValue: this.props.value,
   };
 
   openModal = () => {
@@ -43,18 +41,18 @@ export default class DatePicker extends Component {
       const value = this.state.tempValue;
       this.setState({
         isOpened: false,
-        value
+        currentValue: value
       });
       this.props.onChange(value);
     }
   };
 
   render() {
-    const { isOpened, value } = this.state;
+    const { isOpened, currentValue } = this.state;
     return (
-      <View className="container">
-        <View onClick={this.openModal} className="at-input">
-          <Text className="text">{value}</Text>
+      <View>
+        <View onClick={this.openModal}>
+          <Text className="text">{currentValue}</Text>
         </View>
         <AtModal isOpened={isOpened}>
           <AtModalContent>

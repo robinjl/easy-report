@@ -3,7 +3,7 @@ import { View, Text } from '@tarojs/components';
 import { AtList, AtListItem, AtFab } from 'taro-ui';
 import { queryDailyReports } from '../../../common/services';
 import { queryCurrentUser } from '../../../common/utils';
-import { Loading } from '../../../components';
+import { Loading, Empty } from '../../../components';
 import '../reports.less';
 
 export default class DailyList extends Component {
@@ -11,15 +11,20 @@ export default class DailyList extends Component {
     loading: false,
     data: []
   };
+
   componentDidMount() {
     queryCurrentUser().then(({ id }) =>
-      queryDailyReports({id}).then(response => {
+      queryDailyReports({ id }).then(response => {
         this.setState({
           data: response
         });
       })
     );
   }
+
+  config = {
+    navigationBarTitleText: '日报列表'
+  };
 
   onButtonClick = id => {
     const url =
@@ -38,16 +43,21 @@ export default class DailyList extends Component {
     }
     return (
       <View>
-        <AtList>
-          {data.map(item => (
-            <AtListItem
-              title={item.time}
-              note={`今日工作内容：${item.working_of_today}`}
-              arrow="right"
-              onClick={() => this.onButtonClick(item.id)}
-            />
-          ))}
-        </AtList>
+        {data.length ? (
+          <AtList>
+            {data.map(item => (
+              <AtListItem
+                key={item.id}
+                title={item.time}
+                note={`今日工作内容：${item.working_of_today}`}
+                arrow="right"
+                onClick={() => this.onButtonClick(item.id)}
+              />
+            ))}
+          </AtList>
+        ) : (
+          <Empty />
+        )}
 
         <View className="float-btn">
           <AtFab onClick={this.onButtonClick}>

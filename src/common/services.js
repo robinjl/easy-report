@@ -5,7 +5,7 @@ import request from "./request";
 export function login(params){
   return request('/users/login/', {
     method: 'POST',
-    body: params
+    data: params
   })
 }
 
@@ -21,14 +21,14 @@ export function readDailyReport(id){
 export function createDailyReport(params){
   return request('/daily-report/', {
     method: 'POST',
-    body: params
+    data: params
   })
 }
 
 export function updateDailyReport({id, ...params}){
   return request(`/daily-report/${id}/`, {
     method: 'PUT',
-    body: params
+    data: params
   })
 }
 

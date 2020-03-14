@@ -1,19 +1,33 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View } from '@tarojs/components';
-import { DynamicForm, Toast } from '../../../components';
+import { DynamicForm } from '../../../components';
 import { createDailyReport } from '../../../common/services';
 import { formatDate, queryCurrentUser } from '../../../common/utils';
 
 export default class DailyCreate extends Component {
+  state = {
+    loading: false
+  }
+
+  config = {
+    navigationBarTitleText: '新建日报'
+  }
+
   handleSubmit(params) {
     queryCurrentUser().then(({ id }) => {
+      this.setState({loading: true})
       createDailyReport({ ...params, user: id }).then(response => {
+        this.setState({loading: false})
         if (response && response.id) {
-          this.successToast.open().then(() => {
-            Taro.navigateBack();
-          });
+         Taro.showToast({
+           icon: 'success',
+           title: '新建成功'
+         });
+         this.timer = setTimeout(()=>Taro.navigateBack(), 1500);
         } else {
-          this.errorToast.open();
+          Taro.showToast({
+            icon: 'none',
+            title: '新建失败'
+          });
         }
       });
     });
@@ -21,52 +35,48 @@ export default class DailyCreate extends Component {
   render() {
     const elements = [
       {
-        id: 'time',
+        key: 'time',
         label: '日期',
         type: 'date',
-        showCurrentDate: true,
-        value: formatDate(),
+        initValue: formatDate(),
         required: true
       },
       {
-        id: 'plan_of_today',
+        key: 'plan_of_today',
         label: '今日工作计划',
         type: 'input',
         required: true
       },
       {
-        id: 'working_of_today',
+        key: 'working_of_today',
         label: '今日工作内容',
         type: 'input',
         required: true
       },
       {
-        id: 'plan_of_tomorrow',
+        key: 'plan_of_tomorrow',
         label: '明日工作计划',
         type: 'input',
         required: true
       },
       {
-        id: 'output',
+        key: 'output',
         label: '工作成果',
         type: 'input'
       },
       {
-        id: 'unresolved',
+        key: 'unresolved',
         label: '待解决问题',
         type: 'textarea'
       }
     ];
     return (
-      <View>
         <DynamicForm
           elements={elements}
           onSubmit={this.handleSubmit.bind(this)}
           submitBtnTitle="提交"
+          loading={this.state.loading}
         />
-        <Toast type={'success'} ref={ref => (this.successToast = ref)} />
-        <Toast type={'error'} ref={ref => (this.errorToast = ref)} />
-      </View>
     );
   }
 }

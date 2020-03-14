@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro';
 import { AtList, AtListItem } from 'taro-ui';
-import { Loading } from '../../components';
+import { Loading, Empty } from '../../components';
 import { queryDailyReportStatistics } from '../../common/services';
 import { groupBy } from '../../common/utils';
 
@@ -27,10 +27,14 @@ export default class Statistics extends Component {
     });
   }
 
+  config = {
+    navigationBarTitleText: '日报统计'
+  };
+
   onClick = time => {
     Taro.navigateTo({
       url: `/pages/statistics/detail?time=${time}`
-    })
+    });
   };
 
   render() {
@@ -38,16 +42,23 @@ export default class Statistics extends Component {
     if (loading) {
       return <Loading />;
     }
+    if (data.length === 0) {
+      return <Empty />;
+    }
     return (
       <AtList>
-        {data.map(({ time, count, total }) => (
-          <AtListItem
-            title={time}
-            note={`${count}/${total}`}
-            arrow="right"
-            onClick={() => this.onClick(time)}
-          />
-        ))}
+        {data.map(item => {
+          const { id, time, count, total } = item;
+          return (
+            <AtListItem
+              key={id}
+              title={time}
+              note={`${count}/${total}`}
+              arrow="right"
+              onClick={() => this.onClick(time)}
+            />
+          );
+        })}
       </AtList>
     );
   }

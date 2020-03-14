@@ -1,7 +1,9 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Text } from '@tarojs/components';
-import { AtList, AtListItem, AtButton, AtAvatar } from 'taro-ui';
+import { View, Text, Button } from '@tarojs/components';
+import { AtList, AtListItem, AtAvatar } from 'taro-ui';
 import { queryCurrentUser } from '../../common/utils';
+import icon_about from '../../assets/images/icon_about.png';
+import icon_setting from '../../assets/images/icon_setting.png';
 import './my.less';
 
 export default class My extends Component {
@@ -13,6 +15,11 @@ export default class My extends Component {
       });
     });
   }
+
+  config = {
+    navigationBarTitleText: '我的'
+  }
+
 
   onClick = route =>
     Taro.navigateTo({
@@ -41,24 +48,24 @@ export default class My extends Component {
           <AtListItem
             title="设置"
             arrow="right"
-            thumb="https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png"
+            thumb={icon_setting}
             onClick={() => this.onClick('settings')}
           />
           <AtListItem
             title="关于"
             arrow="right"
-            thumb="http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
+            thumb={icon_about}
             onClick={() => this.onClick('about')}
           />
         </AtList>
 
-        <AtButton
+        <Button
           type="primary"
           onClick={this.onLogout.bind(this)}
           className="logout-btn"
         >
           退出
-        </AtButton>
+        </Button>
       </View>
     );
   }

@@ -29,7 +29,7 @@ export default class StatisticDetail extends Component {
     }
     return (
       <ScrollView scrollX className="table">
-        <View>
+        <View className='time'>
           <Text>日期：{time}</Text>
         </View>
         <View className="row">
@@ -41,19 +41,17 @@ export default class StatisticDetail extends Component {
           <View className="table-cell">工作成果</View>
           <View className="table-cell">待解决问题</View>
         </View>
-        {data.map(
-          (
-            {
-              real_name,
-              plan_of_today,
-              working_of_today,
-              plan_of_tomorrow,
-              output,
-              unresolved
-            },
-            index
-          ) => (
-            <View key={index} className="row">
+        {data.map((item, index) => {
+          const {
+            real_name,
+            plan_of_today,
+            working_of_today,
+            plan_of_tomorrow,
+            output,
+            unresolved
+          } = item;
+          return (
+            <View key={`key-${index}`} className="row">
               <View className="table-cell">{index + 1}</View>
               <View className="table-cell">{real_name}</View>
               <View className="table-cell">{plan_of_today}</View>
@@ -62,8 +60,8 @@ export default class StatisticDetail extends Component {
               <View className="table-cell">{output}</View>
               <View className="table-cell">{unresolved}</View>
             </View>
-          )
-        )}
+          );
+        })}
       </ScrollView>
     );
   }
