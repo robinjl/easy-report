@@ -11,6 +11,7 @@ export default class Statistics extends Component {
   };
 
   componentDidMount() {
+    this.setState({loading: true});
     queryDailyReportStatistics().then(response => {
       if (response && response.status === 1) {
         const { data } = response;
@@ -22,7 +23,7 @@ export default class Statistics extends Component {
           count: value,
           total
         }));
-        this.setState({ data: formatData });
+        this.setState({ data: formatData, loading: false });
       }
     });
   }

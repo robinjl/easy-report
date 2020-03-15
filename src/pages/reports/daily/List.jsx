@@ -8,15 +8,30 @@ import '../reports.less';
 
 export default class DailyList extends Component {
   state = {
+    init: true,
     loading: false,
     data: []
   };
 
-  componentDidMount() {
+  componentDidMount() {}
+
+  componentDidShow() {
+    // AtList 更新数据有问题，重置state, 然后再加载
+    if (this.state.init) {
+      this.setState({
+        loading: true
+      });
+    } else {
+      this.setState({
+        data: []
+      });
+    }
     queryCurrentUser().then(({ id }) =>
-      queryDailyReports({ id }).then(response => {
+      queryDailyReports({ user: id }).then(response => {
         this.setState({
-          data: response
+          data: response,
+          init: false,
+          loading: false
         });
       })
     );
@@ -43,7 +58,7 @@ export default class DailyList extends Component {
     }
     return (
       <View>
-        {data.length ? (
+        {data.length > 0 ? (
           <AtList>
             {data.map(item => (
               <AtListItem

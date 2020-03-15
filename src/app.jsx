@@ -19,7 +19,8 @@ class App extends Component {
       .then(({ id }) => {
         if (id) {
           Taro.switchTab({
-            url: '/pages/home/index'
+            // url: '/pages/home/index'
+            url: '/pages/reports/daily/list'
           });
         } else {
           Taro.redirectTo({
@@ -67,7 +68,8 @@ class App extends Component {
       selectedColor: '#108ee9', // 选中标签字体颜色
       list: [
         {
-          pagePath: 'pages/home/index',
+          // pagePath: 'pages/home/index',
+          pagePath: 'pages/reports/daily/list',
           text: '主页',
           iconPath: 'assets/images/home_unselect.png',
           selectedIconPath: 'assets/images/home_select.png'

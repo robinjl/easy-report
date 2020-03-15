@@ -37,7 +37,8 @@ export default class Login extends Taro.Component {
             const { id, real_name } = response.data;
             setCurrentUser({ id, real_name });
             Taro.switchTab({
-              url: '/pages/home/index'
+              // url: '/pages/home/index',
+              url: '/pages/reports/daily/list'
             });
           } else {
             Taro.showToast({
